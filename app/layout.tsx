@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
-import GaRouteTracker from "@/components/GaRouteTracker"; // 👈 add this import
+import { Suspense } from "react"; // 👈 Add this
+import GaRouteTracker from "@/components/GaRouteTracker"; // 👈 Already imported
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,8 +48,12 @@ export default function RootLayout({
         <header style={{ padding: "8px 12px" }}>
           <LanguageSwitcher />
         </header>
-        {/* ✅ Track route changes */}
-        <GaRouteTracker />
+
+        {/* ✅ Wrap GaRouteTracker in Suspense */}
+        <Suspense fallback={null}>
+          <GaRouteTracker />
+        </Suspense>
+
         {children}
       </body>
     </html>
