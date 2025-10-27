@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "tools": "Tools",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "footer": {
+    "tagline": "Learn money the easy way — in English & BM.",
+    "links": {
+      "tools": "Tools",
+      "about": "About",
+      "contact": "Contact"
+    },
+    "copyright": "All rights reserved."
+  },
+  "tools": {
+    "subtitle": "Simple, mobile-first calculators to help you manage your money smarter.",
+    "title": "Financial Tools",
+    "as": {
+      "title": "Annual Savings Estimator",
+      "desc": "Estimate your yearly savings based on your net monthly salary and expenses.",
+      "labels": {
+        "salary": "Net Monthly Salary (RM)",
+        "expenses": "Monthly Expenses (RM)",
+        "result": "Result",
+        "monthly": "Monthly savings:",
+        "annual": "Annual savings:"
+      },
+      "placeholders": {
+        "salary": "eg. 5000",
+        "expenses": "eg. 3000"
+      }
+    },
+    "ef": {
+      "title": "Emergency Fund Calculator",
+      "desc": "Find out how much you need and how to reach it.",
+      "labels": {
+        "monthly": "Monthly expenses (RM)",
+        "goal": "Savings goal",
+        "one": "1 month",
+        "three": "3 months",
+        "six": "6 months",
+        "current": "Current emergency fund (RM)",
+        "required": "Required fund",
+        "shortfall": "Shortfall",
+        "save6": "Save per month for 6 months:",
+        "save12": "Save per month for 12 months:"
+      }
+    },
+    "fd": {
+      "title": "Fixed Deposit Calculator",
+      "desc": "Estimate your returns from a fixed deposit investment.",
+      "labels": {
+        "amount": "Investment amount (RM)",
+        "duration": "Duration (months)",
+        "rate": "Annual interest rate (%)",
+        "interest": "Interest earned",
+        "total": "Total at maturity"
+      }
+    }
+  },
+  "about": {
+    "title": "About BelajarFinance",
+    "subtitle": "BelajarFinance helps Malaysians learn personal finance the easy way — in both English and Bahasa Malaysia.",
+    "paragraphs": {
+      "p1": "Our goal is simple: make financial literacy accessible, practical, and culturally relevant. Whether you’re starting your first job, saving for emergencies, or planning your future — we’re here to guide you step by step.",
+      "p2": "Everything we build — from calculators to guides — is designed with a mobile-first experience in mind. We believe learning finance should be simple, visual, and interactive."
+    }
+  },
+  "contact": {
+    "title": "Contact Us",
+    "desc": "We’d love to hear from you! Whether you have feedback, ideas, or collaboration opportunities — get in touch below.",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "send": "Send Message"
+    }
+  },
+  "general": {
+  "savedFromLastInput": "(saved from the last input)"
+}
+}

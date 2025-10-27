@@ -1,0 +1,83 @@
+{
+  "nav": {
+    "tools": "Alat",
+    "about": "Tentang",
+    "contact": "Hubungi"
+  },
+  "footer": {
+    "tagline": "Belajar kewangan dengan mudah — dalam Bahasa Inggeris & BM.",
+    "links": {
+      "tools": "Alat",
+      "about": "Tentang",
+      "contact": "Hubungi"
+    },
+    "copyright": "Hak cipta terpelihara."
+  },
+  "tools": {
+    "subtitle": "Kalkulator mudah alih untuk bantu anda urus kewangan dengan lebih bijak.",
+    "title": "Alat Kewangan",
+    "as": {
+      "title": "Penganggar Simpanan Tahunan",
+      "desc": "Anggarkan simpanan tahunan berdasarkan gaji bersih bulanan dan perbelanjaan anda.",
+      "labels": {
+        "salary": "Gaji Bersih Bulanan (RM)",
+        "expenses": "Perbelanjaan Bulanan (RM)",
+        "result": "Hasil",
+        "monthly": "Simpanan bulanan:",
+        "annual": "Simpanan tahunan:"
+      },
+      "placeholders": {
+        "salary": "cth. 5000",
+        "expenses": "cth. 3000"
+      }
+    },
+    "ef": {
+      "title": "Kalkulator Dana Kecemasan",
+      "desc": "Kira jumlah yang anda perlukan dan cara mencapainya.",
+      "labels": {
+        "monthly": "Perbelanjaan bulanan (RM)",
+        "goal": "Sasaran simpanan",
+        "one": "1 bulan",
+        "three": "3 bulan",
+        "six": "6 bulan",
+        "current": "Dana kecemasan semasa (RM)",
+        "required": "Jumlah diperlukan",
+        "shortfall": "Kekurangan",
+        "save6": "Simpan sebulan selama 6 bulan:",
+        "save12": "Simpan sebulan selama 12 bulan:"
+      }
+    },
+    "fd": {
+      "title": "Kalkulator Deposit Tetap",
+      "desc": "Anggarkan pulangan daripada pelaburan deposit tetap.",
+      "labels": {
+        "amount": "Jumlah pelaburan (RM)",
+        "duration": "Tempoh (bulan)",
+        "rate": "Kadar faedah tahunan (%)",
+        "interest": "Faedah diperoleh",
+        "total": "Jumlah akhir"
+      }
+    }
+  },
+  "about": {
+    "title": "Tentang BelajarFinance",
+    "subtitle": "BelajarFinance membantu rakyat Malaysia belajar kewangan peribadi dengan mudah — dalam Bahasa Inggeris dan Bahasa Malaysia.",
+    "paragraphs": {
+      "p1": "Matlamat kami mudah: menjadikan celik kewangan mudah diakses, praktikal, dan relevan dengan budaya tempatan. Sama ada anda baru mula bekerja, menyimpan untuk kecemasan, atau merancang masa depan — kami sedia membantu langkah demi langkah.",
+      "p2": "Semua yang kami bangunkan — daripada kalkulator hingga panduan — direka dengan pengalaman mudah alih sebagai keutamaan. Kami percaya pembelajaran kewangan haruslah ringkas, visual, dan interaktif."
+    }
+  },
+  "contact": {
+    "title": "Hubungi Kami",
+    "desc": "Kami ingin mendengar daripada anda! Sama ada maklum balas, idea, atau peluang kerjasama — hubungi kami di bawah.",
+    "form": {
+      "name": "Nama",
+      "email": "E-mel",
+      "message": "Mesej",
+      "send": "Hantar Mesej"
+    }
+  },
+  "general": {
+  "savedFromLastInput": "(disimpan dari input terakhir)"
+}
+}
