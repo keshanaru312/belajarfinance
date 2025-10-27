@@ -57,7 +57,7 @@ export default async function RootLayout({
         className={`${spaceGrotesk.variable} ${inter.variable} antialiased bg-background text-foreground font-sans`}
       >
         <header className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <Navbar lang={lang} dict={dict} />
+          <Navbar/>
         </header>
 
         <Suspense fallback={null}>
@@ -68,7 +68,7 @@ export default async function RootLayout({
           {children}
         </main>
 
-        <Footer lang={lang} dict={dict} />
+        <Footer/>
       </body>
     </html>
   );
