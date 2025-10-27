@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+export const runtime = "edge";
+
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -9,11 +11,11 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // ✅ Fix: properly handle cookie OR header preference
+  // ✅ Handle cookie OR header preference
   const cookieLang = request.cookies.get("preferredLang")?.value;
   const headerLang = request.headers.get("accept-language") || "";
 
-  let preferredLang = "en"; // default
+  let preferredLang = "en";
   if (cookieLang === "bm" || headerLang.startsWith("ms")) {
     preferredLang = "bm";
   }

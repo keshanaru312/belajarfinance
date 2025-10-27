@@ -1,8 +1,7 @@
-export const runtime = "edge";
-
 import Link from "next/link";
 import { getDictionary } from "@/lib/getDictionary";
 
+export const runtime = "edge";
 export default async function ToolsPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = getDictionary(lang);

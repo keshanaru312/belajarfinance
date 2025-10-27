@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
 import "@/app/globals.css";
@@ -21,6 +19,7 @@ const inter = Inter({
   display: "swap",
 });
 
+export const runtime = "edge";
 export const metadata: Metadata = {
   title: "BelajarFinance",
   description: "Learn personal finance in English and BM.",

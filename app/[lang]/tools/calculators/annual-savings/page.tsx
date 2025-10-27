@@ -1,10 +1,11 @@
 "use client";
 
-export const runtime = "edge";
+
 import { usePathname } from "next/navigation";
 import { getDictionary } from "@/lib/getDictionary";
 import { usePersistentValue } from "@/hooks/usePersistentValue";
 
+export const runtime = "edge";
 export default function AnnualSavingsCalculator() {
   const pathname = usePathname();
   const lang = pathname.split("/")[1] || "en";

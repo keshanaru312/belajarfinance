@@ -1,5 +1,5 @@
-export const runtime = "edge";
 import { getDictionary } from "@/lib/getDictionary";
+export const runtime = "edge";
 
 export const metadata = {
   title: "About | BelajarFinance",
