@@ -11,9 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   };
 }
 
-export default async function ContactPage({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params;
-  const dict = await getDictionary(lang);
-
-  return <ContactForm lang={lang} dict={dict} />;
+// app/[lang]/contact/page.tsx
+export default async function ContactPage() {
+  return <ContactForm />;
 }
