@@ -7,7 +7,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
   return {
     title: `${dict.contact.title} | BelajarFinance`,
-    description: dict.contact.description,
+    description: dict.contact.desc,
   };
 }
 
