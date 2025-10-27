@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import { getDictionary } from "@/lib/getDictionary";
 
 export const metadata = {

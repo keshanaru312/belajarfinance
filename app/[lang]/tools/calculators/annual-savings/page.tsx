@@ -1,5 +1,6 @@
 "use client";
 
+export const runtime = "edge";
 import { usePathname } from "next/navigation";
 import { getDictionary } from "@/lib/getDictionary";
 import { usePersistentValue } from "@/hooks/usePersistentValue";
