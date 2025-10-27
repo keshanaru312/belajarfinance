@@ -79,4 +79,4 @@ export default function AnnualSavingsCalculator() {
       </div>
     </section>
   );
-}export const runtime = "edge";
+}

@@ -1,4 +1,3 @@
-export const runtime = "edge";
 export default async function LangHome({ params }: { params: Promise<{ lang: string }> }) {
     const { lang } = await params;
   

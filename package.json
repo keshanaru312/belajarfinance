@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "preview": "opennextjs-cloudflare build && wrangler pages dev .vercel/output/static",
+    "deploy": "opennextjs-cloudflare build && wrangler pages deploy .vercel/output/static"
   },
   "dependencies": {
     "lucide-react": "^0.548.0",
@@ -15,6 +17,7 @@
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.11.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -22,6 +25,10 @@
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "^4.45.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

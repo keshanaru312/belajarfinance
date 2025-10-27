@@ -15,5 +15,3 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function ContactPage() {
   return <ContactForm />;
 }
-
-export const runtime = "edge";

@@ -1,6 +1,5 @@
 import React from "react";
 
-export const runtime = "edge";
 export default function UIDemo() {
   return (
     <main className="p-6 space-y-8 max-w-xl mx-auto">

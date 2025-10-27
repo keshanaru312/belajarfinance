@@ -101,4 +101,4 @@ export default function FixedDepositCalculator() {
       </div>
     </section>
   );
-}export const runtime = "edge";
+}

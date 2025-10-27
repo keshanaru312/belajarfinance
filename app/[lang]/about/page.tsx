@@ -23,5 +23,3 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
     </section>
   );
 }
-
-export const runtime = "edge";

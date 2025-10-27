@@ -111,4 +111,4 @@ export default function EmergencyFundCalculator() {
       </div>
     </section>
   );
-}export const runtime = "edge";
+}
