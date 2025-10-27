@@ -1,7 +1,6 @@
 import ContactForm from "./ContactForm";
 import { getDictionary } from "@/lib/getDictionary";
 
-export const runtime = "edge";
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
@@ -16,3 +15,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 export default async function ContactPage() {
   return <ContactForm />;
 }
+
+export const runtime = "edge";

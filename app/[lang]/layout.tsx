@@ -19,7 +19,6 @@ const inter = Inter({
   display: "swap",
 });
 
-export const runtime = "edge";
 export const metadata: Metadata = {
   title: "BelajarFinance",
   description: "Learn personal finance in English and BM.",

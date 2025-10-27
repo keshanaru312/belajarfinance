@@ -1,5 +1,4 @@
 import { getDictionary } from "@/lib/getDictionary";
-export const runtime = "edge";
 
 export const metadata = {
   title: "About | BelajarFinance",
@@ -24,3 +23,5 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
     </section>
   );
 }
+
+export const runtime = "edge";

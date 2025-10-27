@@ -5,7 +5,6 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { getDictionary } from "@/lib/getDictionary";
 
-export const runtime = "edge";
 export default function FixedDepositCalculator() {
   const pathname = usePathname();
   const lang = pathname.split("/")[1] || "en";
@@ -102,4 +101,4 @@ export default function FixedDepositCalculator() {
       </div>
     </section>
   );
-}
+}export const runtime = "edge";

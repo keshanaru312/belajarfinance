@@ -1,7 +1,8 @@
+// middleware.ts
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function proxy(request: NextRequest) {
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip if already has a language prefix
@@ -9,7 +10,7 @@ export function proxy(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // ✅ Fix: properly handle cookie OR header preference
+  // ✅ Handle cookie OR header preference
   const cookieLang = request.cookies.get("preferredLang")?.value;
   const headerLang = request.headers.get("accept-language") || "";
 
@@ -18,9 +19,10 @@ export function proxy(request: NextRequest) {
     preferredLang = "bm";
   }
 
+  // Redirect to the preferred language path
   return NextResponse.redirect(new URL(`/${preferredLang}${pathname}`, request.url));
 }
 
 export const config = {
-  matcher: ["/((?!_next|api|favicon.ico).*)"], // exclude static files
+  matcher: ["/((?!_next|api|favicon.ico).*)"], // exclude static files and API routes
 };
