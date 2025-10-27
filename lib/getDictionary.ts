@@ -4,5 +4,8 @@ import bm from "@/locales/bm.json";
 const dictionaries = { en, bm };
 
 export function getDictionary(lang: string) {
-  return dictionaries[lang] || dictionaries.en;
+  if (lang in dictionaries) {
+    return dictionaries[lang as keyof typeof dictionaries];
+  }
+  return dictionaries.en;
 }
