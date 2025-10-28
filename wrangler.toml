@@ -1,5 +1,5 @@
 name = "belajarfinance"
-main = ".open-next/worker.js"
+# main = ".open-next/worker.js"
 compatibility_date = "2025-10-27"
 compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 # wrangler.toml (valid format for Pages)
