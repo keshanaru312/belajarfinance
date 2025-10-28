@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import ContactForm from "./ContactForm";
 import { getDictionary } from "@/lib/getDictionary";
 

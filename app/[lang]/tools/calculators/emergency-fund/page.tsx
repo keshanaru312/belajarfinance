@@ -1,3 +1,5 @@
+
+
 "use client";
 
 
@@ -6,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { getDictionary } from "@/lib/getDictionary";
 import { usePersistentValue } from "@/hooks/usePersistentValue";
 
+export const runtime = "edge";
 export default function EmergencyFundCalculator() {
   const pathname = usePathname();
   const lang = pathname.split("/")[1] || "en";

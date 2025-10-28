@@ -1,0 +1,9 @@
+name = "belajarfinance"
+main = ".open-next/worker.js"
+compatibility_date = "2025-10-27"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+
+[[r2_buckets]]
+binding = "NEXT_INC_CACHE_R2_BUCKET"
+bucket_name = "belajarfinance-cache"
+preview_bucket_name = "belajarfinance-cache-preview"
