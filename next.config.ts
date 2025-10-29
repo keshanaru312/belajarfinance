@@ -10,13 +10,13 @@ const nextConfig: NextConfig = {
     unoptimized: isCloudflare,
   },
 
-  // ✅ Use edge runtime for better performance
+  // ✅ Configure for Cloudflare Pages
   experimental: {
     optimizePackageImports: ['lucide-react'],
   },
 
-  // ✅ Set output to 'export' for Cloudflare Pages
-  output: isCloudflare ? 'export' : 'standalone',
+  // Don't use export for edge runtime compatibility
+  ...(isCloudflare ? {} : { output: 'standalone' }),
 
   // Ensure trailing slashes are handled correctly
   trailingSlash: false,
