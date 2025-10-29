@@ -1,7 +1,8 @@
 name = "belajarfinance"
-# main = ".open-next/worker.js"
+main = ".open-next/worker.js"
 compatibility_date = "2025-10-27"
-compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public", "streams_enable_constructors"]
+framework = "nextjs"
 # wrangler.toml (valid format for Pages)
 pages_build_output_dir = ".open-next"
 

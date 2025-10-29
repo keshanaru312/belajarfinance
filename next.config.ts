@@ -10,8 +10,16 @@ const nextConfig: NextConfig = {
     unoptimized: isCloudflare,
   },
 
-  // ✅ Node build uses standalone output
-  ...(isCloudflare ? {} : { output: "standalone" }),
+  // ✅ Use edge runtime for better performance
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
+
+  // ✅ Set output to 'export' for Cloudflare Pages
+  output: isCloudflare ? 'export' : 'standalone',
+
+  // Ensure trailing slashes are handled correctly
+  trailingSlash: false,
 };
 
 export default nextConfig;
