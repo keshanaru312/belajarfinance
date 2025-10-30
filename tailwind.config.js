@@ -14,10 +14,17 @@ module.exports = {
         colors: {
           background: "var(--background)",
           foreground: "var(--foreground)",
+          surface: "var(--surface)",
+          "surface-secondary": "var(--surface-secondary)",
+          border: "var(--border)",
+          "text-primary": "var(--text-primary)",
+          "text-secondary": "var(--text-secondary)",
+          accent: "var(--accent)",
+          "accent-secondary": "var(--accent-secondary)",
         },
       },
     },
-    darkMode: "media", // or "class" if you prefer manual toggle later
+    darkMode: ["class", '[data-theme="dark"]'],
     plugins: [],
   };
   

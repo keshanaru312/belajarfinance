@@ -13,9 +13,11 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: st
 
   return (
     <section className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="title text-center md:text-left">{dict.about.title}</h1>
+      <h1 className="title text-center md:text-left">
+        About <span className="brand-belajar">Belajar</span><span className="brand-finance">Finance</span>
+      </h1>
       <p className="subtitle text-center md:text-left">
-        {dict.about.subtitle}
+        <span className="brand-belajar">Belajar</span><span className="brand-finance">Finance</span> helps Malaysians learn personal finance the easy way — in both English and Bahasa Malaysia.
       </p>
 
       <div className="card mt-6 space-y-4 text-sm leading-relaxed">

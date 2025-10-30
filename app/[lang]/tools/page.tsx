@@ -37,10 +37,10 @@ export default async function ToolsPage({ params }: { params: Promise<{ lang: st
             href={tool.path}
             className="card hover:shadow-md transition"
           >
-            <h2 className="text-lg font-semibold text-foreground mb-2">
+            <h2 className="card-title">
               {tool.name}
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-300">
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
               {tool.description}
             </p>
           </Link>

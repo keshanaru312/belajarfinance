@@ -78,6 +78,12 @@
     }
   },
   "general": {
-  "savedFromLastInput": "(saved from the last input)"
-}
+    "savedFromLastInput": "(saved from the last input)"
+  },
+  "theme": {
+    "title": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  }
 }

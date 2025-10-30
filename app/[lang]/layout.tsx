@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import GaRouteTracker from "@/components/GaRouteTracker";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { ThemeProvider } from "@/components/ThemeProvider";
 import { getDictionary } from "@/lib/getDictionary";
 
 export const runtime = 'edge';
@@ -59,19 +60,21 @@ export default async function RootLayout({
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} antialiased bg-background text-foreground font-sans`}
       >
-        <header className="p-4 border-b border-gray-200 dark:border-gray-700">
-          <Navbar/>
-        </header>
+        <ThemeProvider>
+          <header className="p-4 border-b navbar-border">
+            <Navbar/>
+          </header>
 
-        <Suspense fallback={null}>
-          <GaRouteTracker />
-        </Suspense>
+          <Suspense fallback={null}>
+            <GaRouteTracker />
+          </Suspense>
 
-        <main className="px-4 py-6 max-w-md mx-auto md:max-w-2xl lg:max-w-3xl">
-          {children}
-        </main>
+          <main className="px-4 py-6 max-w-md mx-auto md:max-w-2xl lg:max-w-3xl">
+            {children}
+          </main>
 
-        <Footer/>
+          <Footer/>
+        </ThemeProvider>
       </body>
     </html>
   );

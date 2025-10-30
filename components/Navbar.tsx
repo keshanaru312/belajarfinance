@@ -3,12 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
 import LanguageSwitcher from "./LanguageSwitcher";
+import { ThemeToggle } from "./ThemeToggle";
 import { getDictionary } from "@/lib/getDictionary";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [themeMenuOpen, setThemeMenuOpen] = useState(false);
   const pathname = usePathname();
 
   // ✅ Detect language from the URL
@@ -24,14 +26,14 @@ export default function Navbar() {
   const isActive = (href: string) => pathname.startsWith(`/${lang}${href}`);
 
   return (
-    <nav className="w-full bg-background border-b border-gray-200 dark:border-gray-700">
+    <nav className="w-full bg-background border-b navbar-border">
       <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* ✅ Logo / Brand */}
         <Link
           href={`/${lang}`}
-          className="font-heading text-lg font-semibold tracking-tight text-foreground"
+          className="font-heading text-lg font-semibold tracking-tight"
         >
-          Belajar<span className="text-blue-600">Finance</span>
+          <span className="brand-belajar">Belajar</span><span className="brand-finance">Finance</span>
         </Link>
 
         {/* ✅ Desktop nav links */}
@@ -58,7 +60,7 @@ export default function Navbar() {
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
-            className="p-2"
+            className="p-2 hamburger-icon"
           >
             {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -67,22 +69,45 @@ export default function Navbar() {
 
       {/* ✅ Mobile dropdown */}
       {menuOpen && (
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-700 bg-background">
-          <div className="px-4 py-3 space-y-2">
+        <div className="md:hidden border-t bg-background navbar-border">
+          <div className="px-4 py-3 space-y-1">
+            {/* Navigation items */}
             {navItems.map(({ href, label }) => (
               <Link
                 key={href}
                 href={`/${lang}${href}`}
                 onClick={() => setMenuOpen(false)}
-                className={`block font-medium ${
+                className={`block px-3 py-2 rounded-md text-sm font-medium transition ${
                   isActive(href)
-                    ? "text-blue-600 dark:text-blue-400 underline underline-offset-4"
-                    : "text-foreground"
+                    ? "mobile-menu-item-active"
+                    : "text-text-primary hover:bg-surface-secondary"
                 }`}
+                style={isActive(href) ? {} : { color: 'var(--text-primary)' }}
               >
                 {label}
               </Link>
             ))}
+            
+            {/* Theme submenu */}
+            <div>
+              <button
+                onClick={() => setThemeMenuOpen(!themeMenuOpen)}
+                className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium text-text-primary hover:bg-surface-secondary transition"
+              >
+                <span>{dict.theme?.title || "Theme"}</span>
+                {themeMenuOpen ? (
+                  <ChevronUp className="w-4 h-4" />
+                ) : (
+                  <ChevronDown className="w-4 h-4" />
+                )}
+              </button>
+              
+              {themeMenuOpen && (
+                <div className="mt-2 ml-4">
+                  <ThemeToggle dict={dict} showTitle={false} />
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}

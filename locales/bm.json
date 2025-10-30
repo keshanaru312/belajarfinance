@@ -78,6 +78,12 @@
     }
   },
   "general": {
-  "savedFromLastInput": "(disimpan dari input terakhir)"
-}
+    "savedFromLastInput": "(disimpan dari input terakhir)"
+  },
+  "theme": {
+    "title": "Tema",
+    "light": "Cerah",
+    "dark": "Gelap",
+    "system": "Sistem"
+  }
 }
