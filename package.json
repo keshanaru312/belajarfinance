@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "CLOUDFLARE=true next build",
+    "build": "CLOUDFLARE=true open-next build --config ./open-next.config.ts",
     "start": "next start",
-    "pages:build": "CLOUDFLARE=true next build",
-    "pages:deploy": "npx wrangler pages deploy .next"
+    "pages:build": "CLOUDFLARE=true open-next build --config ./open-next.config.ts",
+    "pages:deploy": "npx wrangler pages deploy .open-next"
   },
   "dependencies": {
     "lucide-react": "^0.548.0",
