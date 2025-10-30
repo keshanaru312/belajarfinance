@@ -44,8 +44,8 @@ export default function Navbar() {
               href={`/${lang}${href}`}
               className={`text-sm font-medium transition ${
                 isActive(href)
-                  ? "text-blue-600 dark:text-blue-400 underline underline-offset-4"
-                  : "text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400"
+                  ? "menu-link-active underline underline-offset-4"
+                  : "text-gray-700 dark:text-gray-300 menu-link-hover"
               }`}
             >
               {label}
