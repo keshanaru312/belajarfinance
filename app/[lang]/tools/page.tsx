@@ -9,6 +9,11 @@ export default async function ToolsPage({ params }: { params: Promise<{ lang: st
 
   const calculators = [
     {
+      name: dict.tools.bc.title,
+      description: dict.tools.bc.desc,
+      path: `/${lang}/tools/calculators/budget-calculator`,
+    },
+    {
       name: dict.tools.fd.title,
       description: dict.tools.fd.desc,
       path: `/${lang}/tools/calculators/fixed-deposit`,

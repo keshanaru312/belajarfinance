@@ -57,6 +57,103 @@
         "interest": "Interest earned",
         "total": "Total at maturity"
       }
+    },
+    "bc": {
+      "title": "Budget Calculator",
+      "desc": "Discover which budgeting rule works best for you: 50:30:20, 70:20:10, or 80:20."
+    }
+  },
+  "budgetCalculator": {
+    "title": "Budget Calculator",
+    "intro": "Discover which budgeting rule works best for you: 50:30:20, 70:20:10, or 80:20.",
+    "labels": {
+      "monthlyIncome": "Monthly Income (RM)",
+      "expenseType": "Expense Type",
+      "expenseName": "Expense Name",
+      "amount": "Amount (RM)",
+      "howDetailed": "How detailed do you want to be?",
+      "recommended": "Recommended"
+    },
+    "buttons": {
+      "start": "Start Budgeting",
+      "back": "Back",
+      "continue": "Continue",
+      "seeResults": "See Results",
+      "startOver": "Start Over",
+      "adjustSavings": "Adjust Savings",
+      "adjustAmounts": "Adjust Amounts",
+      "addExpense": "Add Expense",
+      "addNeed": "Add Essential Expense",
+      "addWant": "Add Fun Expense",
+      "switchToSimple": "Switch to Simple Mode",
+      "switchToDetailed": "Switch to Detailed Mode"
+    },
+    "steps": {
+      "needs": {
+        "title": "Essential Expenses (Needs)",
+        "description": "These are essential expenses you can't live without.",
+        "cardTitle": "Your Needs",
+        "cardDescription": "Housing, utilities, groceries, transport, etc."
+      },
+      "wants": {
+        "title": "Fun Expenses (Wants)",
+        "description": "These are the fun stuff - entertainment, dining out, hobbies.",
+        "cardTitle": "Your Wants",
+        "cardDescription": "Entertainment, dining out, shopping, hobbies, etc."
+      },
+      "savings": {
+        "title": "Allocate Your Savings",
+        "description": "Decide how to split your remaining money between emergency fund and other savings.",
+        "emergencyFund": "Emergency Fund (RM)",
+        "otherSavings": "Other Savings (RM)"
+      }
+    },
+    "flowTypes": {
+      "detailed": {
+        "title": "Detailed Breakdown (Recommended)",
+        "desc": "Break down expenses by category for easier adjustments and optimization. Perfect for fine-tuning your budget."
+      },
+      "simple": {
+        "title": "Quick Overview",
+        "desc": "Fast track to understand your budgeting rule. Just enter total amounts to get instant insights."
+      }
+    },
+    "simple": {
+      "title": "Enter Your Budget Totals",
+      "description": "Enter the total amounts you spend on needs, wants, and savings each month.",
+      "labels": {
+        "totalNeeds": "Total Essential Expenses (RM)",
+        "totalWants": "Total Fun Expenses (RM)",
+        "totalSavings": "Total Savings (RM)"
+      }
+    },
+    "validation": {
+      "tooHigh": {
+        "title": "Expenses Too High",
+        "message": "Your expenses are more than 150% of your income. Please reduce your expenses to continue."
+      },
+      "exceedsIncome": {
+        "title": "Spending Meets or Exceeds Income",
+        "message": "Your expenses are equal or more than your income."
+      },
+      "noSavingsAvailable": {
+        "title": "Spending Meets or Exceeds Income",
+        "message": "Savings can only be added when income exceeds expenses."
+      }
+    },
+    "results": {
+      "title": "Your Budget Analysis",
+      "description": "Here's how your budget stacks up against popular budgeting rules.",
+      "yourBudget": "Your Current Budget",
+      "bestMatch": "Best Match",
+      "bestMatchDesc": "This budgeting rule is closest to your current spending pattern.",
+      "nextStep": "Next Step",
+      "aspireFor": "Consider working towards",
+      "forBetter": "for better financial balance",
+      "allRules": "All Budgeting Rules",
+      "priorityAction": "Priority Action",
+      "overspendingAdvice": "Your first priority should be reducing expenses to spend within your income. Consider cutting non-essential expenses and finding ways to increase your income.",
+      "goldStandard": "Well done! You've achieved the gold standard of budgeting."
     }
   },
   "about": {

@@ -57,6 +57,103 @@
         "interest": "Faedah diperoleh",
         "total": "Jumlah akhir"
       }
+    },
+    "bc": {
+      "title": "Kalkulator Belanjawan",
+      "desc": "Ketahui peraturan belanjawan mana yang sesuai untuk anda: 50:30:20, 70:20:10, atau 80:20."
+    }
+  },
+  "budgetCalculator": {
+    "title": "Kalkulator Belanjawan",
+    "intro": "Ketahui peraturan belanjawan mana yang sesuai untuk anda: 50:30:20, 70:20:10, atau 80:20.",
+    "labels": {
+      "monthlyIncome": "Pendapatan Bulanan (RM)",
+      "expenseType": "Jenis Perbelanjaan",
+      "expenseName": "Nama Perbelanjaan",
+      "amount": "Jumlah (RM)",
+      "howDetailed": "Sejauh mana butiran yang anda mahu?",
+      "recommended": "Disyorkan"
+    },
+    "buttons": {
+      "start": "Mula Belanjawan",
+      "back": "Kembali",
+      "continue": "Teruskan",
+      "seeResults": "Lihat Keputusan",
+      "startOver": "Mula Semula",
+      "adjustSavings": "Laraskan Simpanan",
+      "adjustAmounts": "Laraskan Jumlah",
+      "addExpense": "Tambah Perbelanjaan",
+      "addNeed": "Tambah Perbelanjaan Asas",
+      "addWant": "Tambah Perbelanjaan Pilihan",
+      "switchToSimple": "Tukar ke Mod Ringkas",
+      "switchToDetailed": "Tukar ke Mod Terperinci"
+    },
+    "steps": {
+      "needs": {
+        "title": "Perbelanjaan Asas (Keperluan)",
+        "description": "Ini adalah perbelanjaan penting yang tidak boleh dielakkan.",
+        "cardTitle": "Keperluan Anda",
+        "cardDescription": "Perumahan, utiliti, groceri, pengangkutan, dll."
+      },
+      "wants": {
+        "title": "Perbelanjaan Pilihan (Kehendak)",
+        "description": "Ini adalah perkara menyeronokkan - hiburan, makan luar, hobi.",
+        "cardTitle": "Kehendak Anda",
+        "cardDescription": "Hiburan, makan luar, membeli-belah, hobi, dll."
+      },
+      "savings": {
+        "title": "Peruntukkan Simpanan",
+        "description": "Tentukan cara membahagikan baki wang antara dana kecemasan dan simpanan lain.",
+        "emergencyFund": "Dana Kecemasan (RM)",
+        "otherSavings": "Simpanan Lain (RM)"
+      }
+    },
+    "flowTypes": {
+      "detailed": {
+        "title": "Pecahan Terperinci (Disyorkan)",
+        "desc": "Pecahkan perbelanjaan mengikut kategori untuk penyesuaian dan pengoptimuman yang mudah. Sesuai untuk memperhalusi belanjawan."
+      },
+      "simple": {
+        "title": "Gambaran Pantas",
+        "desc": "Laluan pantas untuk memahami peraturan belanjawan anda. Masukkan jumlah keseluruhan untuk pandangan segera."
+      }
+    },
+    "simple": {
+      "title": "Masukkan Jumlah Belanjawan Anda",
+      "description": "Masukkan jumlah keseluruhan yang anda belanjakan untuk keperluan, kehendak, dan simpanan setiap bulan.",
+      "labels": {
+        "totalNeeds": "Jumlah Perbelanjaan Asas (RM)",
+        "totalWants": "Jumlah Perbelanjaan Pilihan (RM)",
+        "totalSavings": "Jumlah Simpanan (RM)"
+      }
+    },
+    "validation": {
+      "tooHigh": {
+        "title": "Perbelanjaan Terlalu Tinggi",
+        "message": "Perbelanjaan anda melebihi 150% daripada pendapatan. Sila kurangkan perbelanjaan untuk meneruskan."
+      },
+      "exceedsIncome": {
+        "title": "Berbelanja Melebihi Pendapatan",
+        "message": "Anda berbelanja lebih daripada pendapatan."
+      },
+      "noSavingsAvailable": {
+        "title": "Berbelanja Melebihi Pendapatan",
+        "message": "Simpanan hanya boleh ditambah apabila pendapatan melebihi perbelanjaan."
+      }
+    },
+    "results": {
+      "title": "Analisis Belanjawan Anda",
+      "description": "Inilah prestasi belanjawan anda berbanding peraturan belanjawan popular.",
+      "yourBudget": "Belanjawan Semasa Anda",
+      "bestMatch": "Padanan Terbaik",
+      "bestMatchDesc": "Peraturan belanjawan ini paling hampir dengan corak perbelanjaan semasa anda.",
+      "nextStep": "Langkah Seterusnya",
+      "aspireFor": "Pertimbangkan untuk mencapai",
+      "forBetter": "untuk keseimbangan kewangan yang lebih baik",
+      "allRules": "Semua Peraturan Belanjawan",
+      "priorityAction": "Tindakan Keutamaan",
+      "overspendingAdvice": "Keutamaan pertama anda ialah mengurangkan perbelanjaan untuk berbelanja dalam pendapatan anda. Pertimbangkan untuk memotong perbelanjaan tidak penting dan mencari cara untuk meningkatkan pendapatan.",
+      "goldStandard": "Tahniah! Anda telah mencapai standard emas belanjawan."
     }
   },
   "about": {

@@ -14,8 +14,12 @@ export default function AnnualSavingsCalculator() {
   const lang = pathname.split("/")[1] || "en";
   const dict = getDictionary(lang);
 
-  const [salary, setSalary] = usePersistentValue("salary", 5000);
-  const [expenses, setExpenses] = usePersistentValue("monthlyExpenses", 3000);
+  // Use shared global values, with fallbacks to local values
+  const [globalIncome] = usePersistentValue("monthlyIncome", 0);
+  const [globalExpenses] = usePersistentValue("totalExpenses", 0);
+  
+  const [salary, setSalary] = usePersistentValue("salary", globalIncome || 5000);
+  const [expenses, setExpenses] = usePersistentValue("monthlyExpenses", globalExpenses || 3000);
 
   const monthlySavings = () => (salary && expenses ? salary - expenses : 0);
   const annualSavings = () => monthlySavings() * 12;
@@ -28,7 +32,12 @@ export default function AnnualSavingsCalculator() {
       <div className="card space-y-4 mt-6">
         <div>
           <label className="block text-sm font-medium">
-            {dict.tools.as.labels.salary}
+            {dict.tools.as.labels.salary}{" "}
+            {globalIncome > 0 && salary === globalIncome && (
+              <span className="text-xs text-blue-500 italic">
+                (from budget calculator)
+              </span>
+            )}
           </label>
           <input
             type="number"
@@ -42,7 +51,11 @@ export default function AnnualSavingsCalculator() {
         <div>
           <label className="block text-sm font-medium">
             {dict.tools.as.labels.expenses}{" "}
-            {expenses !== 3000 && (
+            {globalExpenses > 0 && expenses === globalExpenses ? (
+              <span className="text-xs text-blue-500 italic">
+                (from budget calculator)
+              </span>
+            ) : expenses !== 3000 && (
               <span className="text-xs text-blue-500 italic">
                 {dict.general.savedFromLastInput}
               </span>

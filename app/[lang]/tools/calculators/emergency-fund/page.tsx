@@ -14,9 +14,13 @@ export default function EmergencyFundCalculator() {
   const lang = pathname.split("/")[1] || "en";
   const dict = getDictionary(lang);
 
-  const [monthly, setMonthly] = usePersistentValue("monthlyExpenses", 2500);
+  // Use shared global values, with fallbacks to local values
+  const [globalTotalNeeds] = usePersistentValue("totalNeeds", 0);
+  const [globalEmergencyFund] = usePersistentValue("emergencyFundSavings", 0);
+  
+  const [monthly, setMonthly] = usePersistentValue("monthlyExpenses", globalTotalNeeds || 2500);
   const [goalMonths, setGoalMonths] = useState(3);
-  const [current, setCurrent] = useState(4000);
+  const [current, setCurrent] = useState(globalEmergencyFund || 4000);
 
   const required = monthly * goalMonths;
   const shortfall = Math.max(0, required - current);
@@ -31,7 +35,11 @@ export default function EmergencyFundCalculator() {
       <div className="card space-y-5">
       <label className="block">
           {dict.tools.ef.labels.monthly}{" "}
-          {monthly !== 2500 && (
+          {globalTotalNeeds > 0 && monthly === globalTotalNeeds ? (
+            <span className="text-xs text-blue-500">
+              <em>(from budget calculator)</em>
+            </span>
+          ) : monthly !== 2500 && (
             <span className="text-xs text-blue-500">
               <em>{dict.general.savedFromLastInput}</em>
             </span>
@@ -58,7 +66,12 @@ export default function EmergencyFundCalculator() {
         </label>
 
         <label className="block">
-          {dict.tools.ef.labels.current}
+          {dict.tools.ef.labels.current}{" "}
+          {globalEmergencyFund > 0 && current === globalEmergencyFund && (
+            <span className="text-xs text-blue-500">
+              <em>(from budget calculator)</em>
+            </span>
+          )}
           <input
             type="number"
             className="input mt-1"
