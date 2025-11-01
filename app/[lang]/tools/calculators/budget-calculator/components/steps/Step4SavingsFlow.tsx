@@ -84,8 +84,8 @@ export const Step4SavingsFlow: React.FC<Step4SavingsFlowProps> = ({
             : 'bg-gray-50 dark:bg-gray-800'
         }`}>
           <div className="flex justify-between text-sm mb-2">
-            <span>Available: {formatCurrency(maxSavings)}</span>
-            <span>Remaining: {formatCurrency(Math.max(0, unspentAmount))}</span>
+            <span>{dict.budgetCalculator?.labels?.available || "Available:"} {formatCurrency(maxSavings)}</span>
+            <span>{dict.budgetCalculator?.labels?.remaining || "Remaining:"} {formatCurrency(Math.max(0, unspentAmount))}</span>
           </div>
           {/* Custom progress bar for savings that reflects budget health */}
           <div className="w-full bg-gray-200 rounded-full h-2 mb-2 dark:bg-gray-700">
@@ -122,7 +122,7 @@ export const Step4SavingsFlow: React.FC<Step4SavingsFlowProps> = ({
               disabled={maxSavings <= 0}
             />
             <p className="text-xs text-gray-500 mt-1">
-              {emergencyFundPercentage.toFixed(1)}% of available savings
+              {emergencyFundPercentage.toFixed(1)}% {dict.budgetCalculator?.steps?.savings?.ofAvailableSavings || "of available savings"}
             </p>
           </div>
 
@@ -140,14 +140,14 @@ export const Step4SavingsFlow: React.FC<Step4SavingsFlowProps> = ({
               disabled={maxSavings <= 0}
             />
             <p className="text-xs text-gray-500 mt-1">
-              {otherSavingsPercentage.toFixed(1)}% of available savings
+              {otherSavingsPercentage.toFixed(1)}% {dict.budgetCalculator?.steps?.savings?.ofAvailableSavings || "of available savings"}
             </p>
           </div>
 
           {unspentAmount > 0 && (
             <div className={alertStyles.warning.banner}>
               <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                <strong>{formatCurrency(unspentAmount)}</strong> unallocated will be added to your wants budget.
+                <strong>{formatCurrency(unspentAmount)}</strong> {dict.budgetCalculator?.steps?.savings?.unallocatedMessage || "unallocated will be added to your wants budget."}
               </p>
             </div>
           )}

@@ -66,13 +66,42 @@
   "budgetCalculator": {
     "title": "Kalkulator Belanjawan",
     "intro": "Ketahui peraturan belanjawan mana yang sesuai untuk anda: 50:30:20, 70:20:10, atau 80:20.",
+    "categories": {
+      "needs": "keperluan",
+      "wants": "kehendak",
+      "savings": "simpanan",
+      "needsLabel": "Keperluan",
+      "wantsLabel": "Kehendak",
+      "savingsLabel": "Simpanan"
+    },
+    "status": {
+      "monthlyIncome": "Pendapatan Bulanan:",
+      "totalExpenses": "Jumlah Perbelanjaan:",
+      "totalSavings": "Jumlah Simpanan:",
+      "you": "Anda:"
+    },
     "labels": {
       "monthlyIncome": "Pendapatan Bulanan (RM)",
       "expenseType": "Jenis Perbelanjaan",
       "expenseName": "Nama Perbelanjaan",
       "amount": "Jumlah (RM)",
       "howDetailed": "Sejauh mana butiran yang anda mahu?",
-      "recommended": "Disyorkan"
+      "recommended": "Disyorkan",
+      "available": "Tersedia:",
+      "used": "Digunakan:",
+      "remaining": "Baki:"
+    },
+    "placeholders": {
+      "needsExample": "cth., Perumahan, Barangan Runcit, Pengangkutan",
+      "wantsExample": "cth., Hiburan, Membeli-belah, Makan Luar",
+      "amountZero": "0.00",
+      "amountPlain": "0",
+      "incomeExample": "cth. 5000"
+    },
+    "errors": {
+      "missingInfo": "Maklumat Hilang:",
+      "fillExpenseNames": "Sila isi semua nama perbelanjaan sebelum meneruskan.",
+      "deleteExpense": "Padam perbelanjaan"
     },
     "buttons": {
       "start": "Mula Belanjawan",
@@ -91,21 +120,25 @@
     "steps": {
       "needs": {
         "title": "Perbelanjaan Asas (Keperluan)",
-        "description": "Ini adalah perbelanjaan penting yang tidak boleh dielakkan.",
+        "description": "Ini adalah perbelanjaan asas yang anda tidak boleh hidup tanpanya.",
         "cardTitle": "Keperluan Anda",
-        "cardDescription": "Perumahan, utiliti, groceri, pengangkutan, dll."
+        "cardDescription": "Perumahan, utiliti, barangan runcit, pengangkutan, dll."
       },
       "wants": {
         "title": "Perbelanjaan Pilihan (Kehendak)",
-        "description": "Ini adalah perkara menyeronokkan - hiburan, makan luar, hobi.",
+        "description": "Ini adalah perkara yang menyeronokkan - hiburan, makan luar, hobi.",
         "cardTitle": "Kehendak Anda",
         "cardDescription": "Hiburan, makan luar, membeli-belah, hobi, dll."
       },
       "savings": {
-        "title": "Peruntukkan Simpanan",
-        "description": "Tentukan cara membahagikan baki wang antara dana kecemasan dan simpanan lain.",
+        "title": "Peruntukkan Simpanan Anda",
+        "description": "Tentukan cara membahagikan wang yang tinggal antara dana kecemasan dan simpanan lain.",
         "emergencyFund": "Dana Kecemasan (RM)",
-        "otherSavings": "Simpanan Lain (RM)"
+        "otherSavings": "Simpanan Lain (RM)",
+        "emergencyFundLabel": "Dana Kecemasan",
+        "otherSavingsLabel": "Simpanan Lain",
+        "ofAvailableSavings": "daripada simpanan yang tersedia",
+        "unallocatedMessage": "tidak diperuntukkan akan ditambah kepada belanjawan kehendak anda."
       }
     },
     "flowTypes": {
@@ -153,7 +186,62 @@
       "allRules": "Semua Peraturan Belanjawan",
       "priorityAction": "Tindakan Keutamaan",
       "overspendingAdvice": "Keutamaan pertama anda ialah mengurangkan perbelanjaan untuk berbelanja dalam pendapatan anda. Pertimbangkan untuk memotong perbelanjaan tidak penting dan mencari cara untuk meningkatkan pendapatan.",
-      "goldStandard": "Tahniah! Anda telah mencapai standard emas belanjawan."
+      "goldStandard": "Tahniah! Anda telah mencapai standard emas belanjawan.",
+      "rule": "Kaedah",
+      "breakdown": "Pecahan",
+      "backToOverview": "Kembali ke Gambaran Keseluruhan",
+      "clickToExplore": "Klik mana-mana segmen untuk melihat maklumat terperinci",
+      "clickToExploreSimple": "Klik mana-mana segmen untuk meneroka apa yang mungkin dengan penjejakan terperinci",
+      "viewBreakdownChart": "Lihat Carta Pecahan {category}",
+      "unlockDetailed": "Buka Pecahan Terperinci {category}",
+      "seeWhereMoneyGoes": "Lihat dengan tepat ke mana wang {category} anda dibelanjakan dengan carta interaktif, penjejakan perbelanjaan individu, dan pandangan terperinci untuk mengoptimumkan perbelanjaan anda.",
+      "switchToDetailed": "Tukar ke Penjejakan Terperinci",
+      "setupTime": "Mengambil masa 2-3 minit untuk disediakan • Dapatkan cadangan yang diperibadikan",
+      "recommendations": {
+        "startSaving": "Mula Membina Simpanan!",
+        "overspending": "Mari Kembali ke Landasan",
+        "progress": "Kemajuan Hebat! Teruskan!",
+        "goldAchieved": "Sempurna! Anda Mengikuti Standard Emas!",
+        "goldOptional": "Cemerlang! Anda Menyimpan dengan Baik!",
+        "actionPlan": "Pelan Tindakan",
+        "nextTarget": "Sasaran Seterusnya",
+        "focusReducing": "Fokus untuk mengurangkan perbelanjaan sebanyak",
+        "actionSteps": "Langkah Tindakan:",
+        "toReach": "Untuk mencapai",
+        "target": "sasaran:",
+        "maintain": "Untuk mengekalkan",
+        "balance": "yang sempurna:",
+        "optional": "Penambahbaikan pilihan untuk",
+        "perfect": "Sempurna!",
+        "good": "Bagus!",
+        "belowTarget": "Bawah sasaran!",
+        "aboveTarget": "Atas sasaran!",
+        "great": "Hebat!",
+        "targetLabel": "SASARAN",
+        "excellentBalance": "Keseimbangan kewangan yang cemerlang dicapai",
+        "savingsAchieved": "Simpanan 20%+ Dicapai",
+        "optionalWants": "Pilihan: Pertimbangkan untuk mengurangkan kehendak bagi keseimbangan yang lebih baik",
+        "optionalNeeds": "Pilihan: Pertimbangkan untuk meningkatkan pendapatan bagi liputan keperluan yang lebih baik",
+        "reduceSlightly": "Pertimbangkan untuk mengurangkan perbelanjaan budi bicara sedikit",
+        "savingsExcellent": "Simpanan anda sudah cemerlang - ini hanya pengoptimuman",
+        "considerIncome": "Pertimbangkan peningkatan pendapatan untuk mengurangkan peratusan keperluan",
+        "keepSavings": "Simpanan 20%+ anda sangat baik - teruskan!"
+      },
+      "overspendingRecs": {
+        "keepWantsLow": "Kekalkan Kehendak Bawah 30%",
+        "wantsMessage": "Perbelanjaan Budi Bicara - Utamakan mengurangkannya hingga bawah 30%",
+        "addressNeeds": "Tangani Perbelanjaan Asas",
+        "needsMessage": "Perbelanjaan Asas - Pertimbangkan meningkatkan pendapatan atau mengurangkan kos",
+        "longTerm": "Matlamat Jangka Panjang",
+        "longTermMessage": "Gunakan Peraturan {rule} sebagai panduan ke peringkat seterusnya"
+      },
+      "categoryRecs": {
+        "keep": "Kekalkan {category} pada {current}% - anda tepat pada sasaran!",
+        "reduce": "Kurangkan {category} dari {current}% ke {target}% ({change}%)",
+        "maintain": "Kekalkan {category} pada {current}% - kecekapan cemerlang! (Bawah sasaran {target}%)",
+        "increase": "Tingkatkan {category} dari {current}% ke {target}% (+{change}%)",
+        "maintainExcellent": "Kekalkan kadar {category} yang cemerlang pada {current}%! (Atas sasaran {target}%)"
+      }
     }
   },
   "about": {

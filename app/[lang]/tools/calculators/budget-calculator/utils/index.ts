@@ -1,1 +1,7 @@
-export { formatCurrency, findBestRule, getNextRecommendation } from './budgetUtils';
+export { 
+  formatCurrency, 
+  findBestRule, 
+  getNextRecommendation, 
+  generateCategoryRecommendations,
+  generateOverspendingRecommendations 
+} from './budgetUtils';

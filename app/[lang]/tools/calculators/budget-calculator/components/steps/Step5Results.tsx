@@ -56,12 +56,15 @@ export const Step5Results: React.FC<Step5ResultsProps> = ({
   const needsPercentage = income > 0 ? (totalNeeds / income) * 100 : 0;
   const wantsPercentage = income > 0 ? (totalWants / income) * 100 : 0;
   const savingsPercentage = income > 0 ? (totalSavings / income) * 100 : 0;
-  const nextRecommendation = getNextRecommendation(bestRule.name, totalExpenses, income, dict);
-
-  const isGoldStandard = bestRule.name === "50:30:20";
-  const hasOverspending = totalExpenses > income;
-  const nextRuleName = getNextRecommendation(bestRule.name, totalExpenses, income, dict);
-  const nextRule = budgetRules.find(rule => rule.name === nextRuleName);
+  
+  // Get personalized recommendation using new engine
+  const recommendation = getNextRecommendation(
+    needsPercentage,
+    wantsPercentage,
+    savingsPercentage,
+    totalExpenses,
+    income
+  );
 
   return (
     <section className="max-w-md mx-auto px-4 py-8">
@@ -103,9 +106,7 @@ export const Step5Results: React.FC<Step5ResultsProps> = ({
 
         {/* Next Step Recommendation */}
         <RecommendationCard
-          hasOverspending={hasOverspending}
-          isGoldStandard={isGoldStandard}
-          nextRuleName={nextRuleName}
+          recommendation={recommendation}
           bestRule={bestRule}
           income={income}
           totalExpenses={totalExpenses}

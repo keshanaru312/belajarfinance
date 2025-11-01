@@ -21,7 +21,7 @@
 
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import { getDictionary } from "@/lib/getDictionary";
 import { usePersistentValue } from "@/hooks/usePersistentValue";
@@ -44,13 +44,13 @@ export default function BudgetCalculator() {
   const lang = pathname.split("/")[1] || "en";
   const dict = getDictionary(lang);
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = usePersistentValue("budgetStep", 1);
   const [flowType, setFlowType] = usePersistentValue<'detailed' | 'simple'>("budgetFlowType", 'detailed');
   const [income, setIncome] = usePersistentValue("budgetIncome", 0);
   const [needsExpenses, setNeedsExpenses] = usePersistentValue<ExpenseItem[]>("budgetNeeds", defaultNeeds);
   const [wantsExpenses, setWantsExpenses] = usePersistentValue<ExpenseItem[]>("budgetWants", []);
-  const [emergencyFundPercentage, setEmergencyFundPercentage] = useState(50);
-  const [otherSavingsPercentage, setOtherSavingsPercentage] = useState(50);
+  const [emergencyFundPercentage, setEmergencyFundPercentage] = usePersistentValue("budgetEmergencyFundPercentage", 50);
+  const [otherSavingsPercentage, setOtherSavingsPercentage] = usePersistentValue("budgetOtherSavingsPercentage", 50);
   
   // Simple flow state
   const [simpleTotalNeeds, setSimpleTotalNeeds] = usePersistentValue("budgetSimpleNeeds", 0);

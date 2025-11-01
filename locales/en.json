@@ -66,13 +66,42 @@
   "budgetCalculator": {
     "title": "Budget Calculator",
     "intro": "Discover which budgeting rule works best for you: 50:30:20, 70:20:10, or 80:20.",
+    "categories": {
+      "needs": "needs",
+      "wants": "wants",
+      "savings": "savings",
+      "needsLabel": "Needs",
+      "wantsLabel": "Wants",
+      "savingsLabel": "Savings"
+    },
+    "status": {
+      "monthlyIncome": "Monthly Income:",
+      "totalExpenses": "Total Expenses:",
+      "totalSavings": "Total Savings:",
+      "you": "You:"
+    },
     "labels": {
       "monthlyIncome": "Monthly Income (RM)",
       "expenseType": "Expense Type",
       "expenseName": "Expense Name",
       "amount": "Amount (RM)",
       "howDetailed": "How detailed do you want to be?",
-      "recommended": "Recommended"
+      "recommended": "Recommended",
+      "available": "Available:",
+      "used": "Used:",
+      "remaining": "Remaining:"
+    },
+    "placeholders": {
+      "needsExample": "e.g., Housing, Groceries, Transport",
+      "wantsExample": "e.g., Entertainment, Shopping, Dining",
+      "amountZero": "0.00",
+      "amountPlain": "0",
+      "incomeExample": "e.g. 5000"
+    },
+    "errors": {
+      "missingInfo": "Missing Information:",
+      "fillExpenseNames": "Please fill in all expense names before continuing.",
+      "deleteExpense": "Delete expense"
     },
     "buttons": {
       "start": "Start Budgeting",
@@ -105,7 +134,11 @@
         "title": "Allocate Your Savings",
         "description": "Decide how to split your remaining money between emergency fund and other savings.",
         "emergencyFund": "Emergency Fund (RM)",
-        "otherSavings": "Other Savings (RM)"
+        "otherSavings": "Other Savings (RM)",
+        "emergencyFundLabel": "Emergency Fund",
+        "otherSavingsLabel": "Other Savings",
+        "ofAvailableSavings": "of available savings",
+        "unallocatedMessage": "unallocated will be added to your wants budget."
       }
     },
     "flowTypes": {
@@ -153,7 +186,62 @@
       "allRules": "All Budgeting Rules",
       "priorityAction": "Priority Action",
       "overspendingAdvice": "Your first priority should be reducing expenses to spend within your income. Consider cutting non-essential expenses and finding ways to increase your income.",
-      "goldStandard": "Well done! You've achieved the gold standard of budgeting."
+      "goldStandard": "Well done! You've achieved the gold standard of budgeting.",
+      "rule": "Rule",
+      "breakdown": "Breakdown",
+      "backToOverview": "Back to Overview",
+      "clickToExplore": "Click any segment to see detailed information",
+      "clickToExploreSimple": "Click any segment to explore what's possible with detailed tracking",
+      "viewBreakdownChart": "View {category} Breakdown Chart",
+      "unlockDetailed": "Unlock Detailed {category} Breakdown",
+      "seeWhereMoneyGoes": "See exactly where your {category} money goes with interactive charts, individual expense tracking, and detailed insights to optimize your spending.",
+      "switchToDetailed": "Switch to Detailed Tracking",
+      "setupTime": "Takes 2-3 minutes to set up • Get personalized recommendations",
+      "recommendations": {
+        "startSaving": "Start Building Your Savings!",
+        "overspending": "Let's Get Back on Track",
+        "progress": "Great Progress! Keep Going!",
+        "goldAchieved": "Perfect! You're Following the Gold Standard!",
+        "goldOptional": "Excellent! You're Saving Well!",
+        "actionPlan": "Action Plan",
+        "nextTarget": "Next Target",
+        "focusReducing": "Focus on reducing expenses by",
+        "actionSteps": "Action Steps:",
+        "toReach": "To reach the",
+        "target": "target:",
+        "maintain": "To maintain the perfect",
+        "balance": "balance:",
+        "optional": "Optional improvements for perfect",
+        "perfect": "Perfect!",
+        "good": "Good!",
+        "belowTarget": "Below target!",
+        "aboveTarget": "Above target!",
+        "great": "Great!",
+        "targetLabel": "TARGET",
+        "excellentBalance": "Excellent financial balance achieved",
+        "savingsAchieved": "20%+ Savings Achieved",
+        "optionalWants": "Optional: Consider reducing wants for even better balance",
+        "optionalNeeds": "Optional: Consider increasing income for better needs coverage",
+        "reduceSlightly": "Consider reducing discretionary spending slightly",
+        "savingsExcellent": "Your savings are already excellent - this is just optimization",
+        "considerIncome": "Consider income increase to lower needs percentage",
+        "keepSavings": "Your 20%+ savings are excellent - keep it up!"
+      },
+      "overspendingRecs": {
+        "keepWantsLow": "Keep Wants Below 30%",
+        "wantsMessage": "Discretionary Spending - Prioritise reducing it to get below 30%",
+        "addressNeeds": "Address Essential Expenses",
+        "needsMessage": "Essential Expenses - Consider increasing income  or reducing costs",
+        "longTerm": "Long-term Goal",
+        "longTermMessage": "Use Rule {rule} as guidance to your next milestone"
+      },
+      "categoryRecs": {
+        "keep": "Keep {category} at {current}% - you're on target!",
+        "reduce": "Reduce {category} from {current}% to {target}% ({change}%)",
+        "maintain": "Maintain {category} at {current}% - excellent efficiency! (Below {target}% target)",
+        "increase": "Increase {category} from {current}% to {target}% (+{change}%)",
+        "maintainExcellent": "Maintain excellent {category} rate at {current}%! (Above {target}% target)"
+      }
     }
   },
   "about": {

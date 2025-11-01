@@ -47,7 +47,7 @@ export const Step1IncomeInput: React.FC<Step1IncomeInputProps> = ({
             value={income}
             onChange={(e) => setIncome(Number(e.target.value) || 0)}
             className="input"
-            placeholder="e.g. 5000"
+            placeholder={dict.budgetCalculator?.placeholders?.incomeExample || "e.g. 5000"}
           />
         </div>
 

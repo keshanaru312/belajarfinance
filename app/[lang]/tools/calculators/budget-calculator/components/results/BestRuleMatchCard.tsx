@@ -31,7 +31,7 @@ export const BestRuleMatchCard: React.FC<BestRuleMatchCardProps> = ({
 }) => {
   const categories = [
     { 
-      label: 'Needs', 
+      label: dict.budgetCalculator.categories.needsLabel, 
       ruleValue: bestRule.needs, 
       userValue: Math.round(needsPercentage),
       style: categoryStyles.needs,
@@ -43,7 +43,7 @@ export const BestRuleMatchCard: React.FC<BestRuleMatchCardProps> = ({
       )
     },
     { 
-      label: 'Wants', 
+      label: dict.budgetCalculator.categories.wantsLabel, 
       ruleValue: bestRule.wants, 
       userValue: Math.round(wantsPercentage),
       style: categoryStyles.wants,
@@ -55,7 +55,7 @@ export const BestRuleMatchCard: React.FC<BestRuleMatchCardProps> = ({
       )
     },
     { 
-      label: 'Savings', 
+      label: dict.budgetCalculator.categories.savingsLabel, 
       ruleValue: bestRule.savings, 
       userValue: Math.round(savingsPercentage),
       style: categoryStyles.savings,
@@ -132,7 +132,7 @@ export const BestRuleMatchCard: React.FC<BestRuleMatchCardProps> = ({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     )}
-                    You: {category.userValue}%
+                    {dict.budgetCalculator.status.you} {category.userValue}%
                   </div>
                 </div>
               </div>

@@ -2,22 +2,29 @@
  * Recommendation Card Component
  * 
  * Displays personalized recommendations based on the user's budget status.
- * Shows different cards depending on scenario:
- * - Overspending: Urgent action card (red)
- * - Gold Standard (50:30:20): Congratulations card (green)
- * - Default: Next step progression card (blue)
+ * Uses the centralized recommendation engine from budgetUtils.ts.
+ * 
+ * Shows standardized cards for all scenarios:
+ * - Overspending: Urgent action card (red/warning theme)
+ * - Gold Standard achieved: Congratulations/optional optimization (green/success theme)
+ * - Progress needed: Next achievable step (blue/info theme)
  */
 
 import React from 'react';
 import { cardStyles, categoryStyles, badgeStyles } from '../../styles';
-import { budgetRules } from '../../constants';
-import { formatCurrency } from '../../utils';
+import { formatCurrency, generateCategoryRecommendations, generateOverspendingRecommendations } from '../../utils';
 import type { BudgetRule } from '../../types';
 
 interface RecommendationCardProps {
-  hasOverspending: boolean;
-  isGoldStandard: boolean;
-  nextRuleName: string;
+  recommendation: {
+    nextRule: BudgetRule | null;
+    messageType: 'overspending' | 'gold_optional_wants' | 'gold_optional_needs' | 'gold_achieved' | 'progress' | 'start_saving';
+    isGoldStandard: boolean;
+    hasOverspending: boolean;
+    effortScore?: number;
+    alternatives?: string[];
+    bestMatchRule?: BudgetRule;
+  };
   bestRule: BudgetRule;
   income: number;
   totalExpenses: number;
@@ -28,9 +35,7 @@ interface RecommendationCardProps {
 }
 
 export const RecommendationCard: React.FC<RecommendationCardProps> = ({
-  hasOverspending,
-  isGoldStandard,
-  nextRuleName,
+  recommendation,
   bestRule,
   income,
   totalExpenses,
@@ -39,96 +44,221 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
   savingsPercentage,
   dict,
 }) => {
-  const nextRule = budgetRules.find(rule => rule.name === nextRuleName);
+  const { nextRule, messageType, hasOverspending, isGoldStandard, alternatives, bestMatchRule } = recommendation;
 
-  // Overspending - Urgent Action Card
-  if (hasOverspending) {
+  // For overspending, use bestMatchRule; otherwise use nextRule
+  const displayRule = messageType === 'overspending' ? (bestMatchRule || bestRule) : nextRule;
+
+    // =================================================================
+  // SCENARIO 1, 5 & 6: OVERSPENDING / PROGRESS / START_SAVING - Building towards goals
+  // =================================================================
+  if (messageType === 'progress' || messageType === 'overspending' || messageType === 'start_saving') {
+    // Get recommendations from budgetUtils for consistent logic
+    const recommendations = messageType === 'overspending'
+      ? generateOverspendingRecommendations(wantsPercentage, needsPercentage, displayRule!, dict)
+      : generateCategoryRecommendations(displayRule!, needsPercentage, wantsPercentage, savingsPercentage, dict);
+
     return (
-      <div className={cardStyles.warning.container}>
-        <div className={cardStyles.warning.decorTop}></div>
-        <div className={cardStyles.warning.decorBottom}></div>
+      <div className={cardStyles.info.container}>
+        <div className={cardStyles.info.decorTop}></div>
+        <div className={cardStyles.info.decorBottom}></div>
         
-        <div className="relative z-10">
-          <div className="flex items-center gap-4 mb-6">
-            <div className={cardStyles.warning.icon}>
-              <svg className={`w-6 h-6 ${cardStyles.warning.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className={cardStyles.warning.title}>
-                  {dict.budgetCalculator?.results?.priorityAction || "Priority Action"}
+        <div className="relative z-10 p-6">
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className={cardStyles.info.icon}>
+                <svg className={`w-6 h-6 ${cardStyles.info.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
+                <div>
+                <h3 className={`${cardStyles.info.title} flex items-center gap-2`}>
+                    {messageType === 'start_saving'
+                    ? `🚀 ${dict.budgetCalculator.results.recommendations.startSaving}`
+                    : messageType === 'overspending'
+                    ? `📊 ${dict.budgetCalculator.results.recommendations.overspending}`
+                    : `📈 ${dict.budgetCalculator.results.recommendations.progress}`}
                 </h3>
-                <span className={cardStyles.warning.badge}>URGENT</span>
-              </div>
-              <p className={cardStyles.warning.description}>
-                Your spending exceeds income - immediate action required
-              </p>
-            </div>
-          </div>
 
-          {/* Target Focus */}
-          <div className="mb-4">
-            <div className={cardStyles.warning.urgentCard}>
-              <div className="text-center">
-                <div className={`${cardStyles.warning.urgentIcon} mb-4 mx-auto`}>
-                  <svg className={`w-6 h-6 ${cardStyles.warning.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
+                {messageType === 'overspending' ? (
+                    <>
+                      <span className={cardStyles.info.badge}>{dict.budgetCalculator.results.recommendations.actionPlan}</span>
+                      <p className={`${cardStyles.info.description} mt-2`}>
+                        {dict.budgetCalculator.results.recommendations.focusReducing} {formatCurrency(totalExpenses - income)}
+                      </p>
+                    </>
+                ) : (
+                    <span className={cardStyles.info.badge}>
+                      {dict.budgetCalculator.results.recommendations.nextTarget}: {displayRule!.name}
+                    </span>
+                )}
                 </div>
-                <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-1">
-                  &lt;100%
-                </div>
-                <div className="text-sm font-semibold text-orange-700 dark:text-orange-300 uppercase tracking-wide mb-2">
-                  SPENDING TARGET
-                </div>
-                <p className="text-xs text-orange-600 dark:text-orange-400 mb-4 px-2">
-                  Spend less than your income to build financial security
-                </p>
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-red-100 dark:bg-red-900/40 rounded-full">
-                  <svg className="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
-                  </svg>
-                  <span className="text-sm font-medium text-red-700 dark:text-red-300">
-                    Reduce by {Math.round(((totalExpenses / income) * 100) - 100)}%
-                  </span>
-                </div>
-              </div>
+
             </div>
           </div>
           
-          <div className={cardStyles.warning.content}>
-            <p className={`${cardStyles.warning.description} font-medium mb-2`}>
-              Immediate Steps Required:
+          {/* Only show grid for non-overspending scenarios */}
+          {messageType !== 'overspending' && (
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            {(recommendations as ReturnType<typeof generateCategoryRecommendations>).map((rec) => {
+              // Map recommendation label to category style
+              const style = rec.label === 'Needs' ? categoryStyles.needs 
+                          : rec.label === 'Wants' ? categoryStyles.wants 
+                          : categoryStyles.savings;
+              
+              const targetPercentage = displayRule![rec.label.toLowerCase() as 'needs' | 'wants' | 'savings'];
+              
+              return (
+                <div key={rec.label} className={cardStyles.info.content}>
+                  <div className={`${style.iconBg} mb-3 mx-auto`}>
+                    <div className={style.iconColor}>
+                      {rec.label === 'Needs' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                        </svg>
+                      )}
+                      {rec.label === 'Wants' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15m0-5a3 3 0 11-6 0 3 3 0 016 0zm6 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      )}
+                      {rec.label === 'Savings' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <div className={style.value}>
+                        {targetPercentage}%
+                      </div>
+                      <div className={style.label}>
+                        {dict.budgetCalculator.results.recommendations.targetLabel} {rec.label.toUpperCase()}
+                      </div>
+                    </div>
+                    
+                    <div className={`text-xs px-2 py-1 rounded-full inline-flex items-center gap-1 font-medium ${
+                      rec.isOnTarget ? badgeStyles.success : badgeStyles.info
+                    }`}>
+                      {rec.isOnTarget ? (
+                        <>
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          {dict.budgetCalculator.results.recommendations.perfect}
+                        </>
+                      ) : rec.categoryType === 'expense' ? (
+                        // For expenses: if changeNeeded is negative, we need to REDUCE (down arrow)
+                        rec.changeNeeded < 0 ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                            </svg>
+                            {rec.changeNeeded}%
+                          </>
+                        ) : (
+                          // Below target for expenses - maintain (tick)
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            {dict.budgetCalculator.results.recommendations.good}
+                          </>
+                        )
+                      ) : (
+                        // For savings: if changeNeeded is positive, we need to INCREASE (up arrow)
+                        rec.changeNeeded > 0 ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                            </svg>
+                            +{rec.changeNeeded}%
+                          </>
+                        ) : (
+                          // Above target for savings - maintain (tick)
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            {dict.budgetCalculator.results.recommendations.good}
+                          </>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          )}
+          
+          <div className={cardStyles.info.content}>
+            <p className={`${cardStyles.info.description} font-medium mb-2`}>
+              {messageType === 'overspending' ? `💡 ${dict.budgetCalculator.results.recommendations.actionSteps}` : `💡 ${dict.budgetCalculator.results.recommendations.toReach} ${displayRule!.name} ${dict.budgetCalculator.results.recommendations.target}`}
             </p>
-            <ul className={`text-sm ${cardStyles.warning.description} space-y-1`}>
-              <li className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-current rounded-full"></span>
-                Reduce total expenses by {formatCurrency(totalExpenses - income)} ({Math.round(((totalExpenses - income) / income) * 100)}% of income)
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-current rounded-full"></span>
-                Focus on cutting non-essential spending first
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-current rounded-full"></span>
-                Consider increasing income through side work or career development
-              </li>
+            <ul className={`text-sm ${cardStyles.info.description} space-y-1`}>
+              {messageType === 'overspending' ? (
+                // For overspending, show the custom recommendations
+                (recommendations as ReturnType<typeof generateOverspendingRecommendations>).map((rec, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="w-1 h-1 bg-current rounded-full mt-1.5"></span>
+                    <span>{rec.message}</span>
+                  </li>
+                ))
+              ) : (
+                // For normal progress, show category recommendations
+                <>
+                  {(recommendations as ReturnType<typeof generateCategoryRecommendations>).map((rec) => (
+                    <li key={rec.label} className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-current rounded-full"></span>
+                      {rec.message}
+                    </li>
+                  ))}
+                  {alternatives && alternatives.length > 0 && (
+                    <>
+                      {alternatives.includes('reduce_wants_more') && (
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-current rounded-full"></span>
+                          Focus on reducing discretionary spending first
+                        </li>
+                      )}
+                      {alternatives.includes('increase_income') && (
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-current rounded-full"></span>
+                          Consider income increase through side work or advancement
+                        </li>
+                      )}
+                      {alternatives.includes('gradual_approach') && (
+                        <li className="flex items-center gap-2">
+                          <span className="w-1 h-1 bg-current rounded-full"></span>
+                          Take a gradual approach - small changes add up!
+                        </li>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
             </ul>
           </div>
         </div>
       </div>
     );
   }
-
-  // Gold Standard - Congratulations Card
-  if (isGoldStandard) {
-    const categories = [
-      { label: 'Needs', target: 50, current: Math.round(needsPercentage), style: categoryStyles.needs },
-      { label: 'Wants', target: 30, current: Math.round(wantsPercentage), style: categoryStyles.wants },
-      { label: 'Savings', target: 20, current: Math.round(savingsPercentage), style: categoryStyles.savings },
-    ];
+  // =================================================================
+  // SCENARIO 2: GOLD STANDARD ACHIEVED - Celebration!
+  // =================================================================
+  if (messageType === 'gold_achieved') {
+    // Get recommendations from budgetUtils for consistent logic
+    const recommendations = generateCategoryRecommendations(
+      nextRule!,
+      needsPercentage,
+      wantsPercentage,
+      savingsPercentage,
+      dict
+    );
 
     return (
       <div className={cardStyles.success.container}>
@@ -145,58 +275,105 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
               </div>
               <div>
                 <h3 className={`${cardStyles.success.title} flex items-center gap-2`}>
-                  🎉 Perfect! You're Following the Gold Standard!
+                  🎉 {dict.budgetCalculator.results.recommendations.goldAchieved}
                 </h3>
-                <span className={cardStyles.success.badge}>50:30:20 Rule</span>
+                <span className={cardStyles.success.badge}>{nextRule!.name} {dict.budgetCalculator.results.rule}</span>
               </div>
             </div>
             <div>
               <p className={cardStyles.success.description}>
-                Excellent financial balance achieved
+                {dict.budgetCalculator.results.recommendations.excellentBalance}
               </p>
             </div>
           </div>
           
           <div className="grid grid-cols-3 gap-4 mb-4">
-            {categories.map((item) => {
-              const changeNeeded = item.target - item.current;
-              const isOnTarget = changeNeeded === 0;
+            {recommendations.map((rec) => {
+              // Map recommendation label to category style
+              const style = rec.label === 'Needs' ? categoryStyles.needs 
+                          : rec.label === 'Wants' ? categoryStyles.wants 
+                          : categoryStyles.savings;
+              
+              const targetPercentage = nextRule![rec.label.toLowerCase() as 'needs' | 'wants' | 'savings'];
               
               return (
-                <div key={item.label} className={cardStyles.success.content}>
-                  <div className={`${item.style.iconBg} mb-3 mx-auto`}>
-                    <div className={item.style.iconColor}>
-                      {/* Icon SVG would go here */}
+                <div key={rec.label} className={cardStyles.success.content}>
+                  <div className={`${style.iconBg} mb-3 mx-auto`}>
+                    <div className={style.iconColor}>
+                      {rec.label === 'Needs' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                        </svg>
+                      )}
+                      {rec.label === 'Wants' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15m0-5a3 3 0 11-6 0 3 3 0 016 0zm6 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      )}
+                      {rec.label === 'Savings' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      )}
                     </div>
                   </div>
                   
                   <div className="text-center">
                     <div className="mb-2">
-                      <div className={item.style.value}>
-                        {item.target}%
+                      <div className={style.value}>
+                        {targetPercentage}%
                       </div>
-                      <div className={item.style.label}>
-                        Target {item.label}
+                      <div className={style.label}>
+                        {dict.budgetCalculator.results.recommendations.targetLabel} {rec.label.toUpperCase()}
                       </div>
                     </div>
                     
                     <div className={`text-xs px-2 py-1 rounded-full inline-flex items-center gap-1 font-medium ${
-                      isOnTarget ? badgeStyles.success : badgeStyles.info
+                      rec.isOnTarget ? badgeStyles.success : badgeStyles.info
                     }`}>
-                      {isOnTarget ? (
+                      {rec.isOnTarget ? (
                         <>
                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
-                          Perfect!
+                          {dict.budgetCalculator.results.recommendations.perfect}
                         </>
+                      ) : rec.categoryType === 'expense' ? (
+                        // For expenses: if changeNeeded is negative, we need to REDUCE (down arrow)
+                        rec.changeNeeded < 0 ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                            </svg>
+                            {rec.changeNeeded}%
+                          </>
+                        ) : (
+                          // Below target for expenses - maintain (tick)
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            {dict.budgetCalculator.results.recommendations.belowTarget}
+                          </>
+                        )
                       ) : (
-                        <>
-                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
-                          </svg>
-                          {changeNeeded > 0 ? '+' : ''}{changeNeeded}%
-                        </>
+                        // For savings: if changeNeeded is positive, we need to INCREASE (up arrow)
+                        rec.changeNeeded > 0 ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                            </svg>
+                            +{rec.changeNeeded}%
+                          </>
+                        ) : (
+                          // Above target for savings - maintain (tick)
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            {dict.budgetCalculator.results.recommendations.aboveTarget}
+                          </>
+                        )
                       )}
                     </div>
                   </div>
@@ -207,21 +384,21 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
           
           <div className={cardStyles.success.content}>
             <p className={`${cardStyles.success.description} font-medium mb-2`}>
-              💡 To maintain the perfect 50:30:20 balance:
+              💡 {dict.budgetCalculator.results.recommendations.maintain} {nextRule!.name} {dict.budgetCalculator.results.recommendations.balance}
             </p>
             <ul className={`text-sm ${cardStyles.success.description} space-y-1`}>
-              {categories.map((item) => {
-                const changeNeeded = item.target - item.current;
-                if (changeNeeded === 0) {
-                  return (
-                    <li key={item.label} className="flex items-center gap-2">
-                      <span className="w-1 h-1 bg-current rounded-full"></span>
-                      Keep {item.label.toLowerCase()} at {item.target}% - you're perfectly on target!
-                    </li>
-                  );
-                }
-                return null;
-              }).filter(Boolean)}
+              {generateCategoryRecommendations(
+                nextRule!,
+                needsPercentage,
+                wantsPercentage,
+                savingsPercentage,
+                dict
+              ).map((rec) => (
+                <li key={rec.label} className="flex items-center gap-2">
+                  <span className="w-1 h-1 bg-current rounded-full"></span>
+                  {rec.message}
+                </li>
+              ))}
             </ul>
           </div>
         </div>
@@ -229,42 +406,174 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
     );
   }
 
-  // Default - Next Step Card
-  if (nextRule) {
+  // =================================================================
+  // SCENARIO 3 & 4: GOLD OPTIONAL WANTS/NEEDS - Optional improvements
+  // =================================================================
+  if (messageType === 'gold_optional_wants' || messageType === 'gold_optional_needs') {
+    // Get recommendations from budgetUtils for consistent logic
+    const recommendations = generateCategoryRecommendations(
+      nextRule!,
+      needsPercentage,
+      wantsPercentage,
+      savingsPercentage,
+      dict
+    );
+
     return (
-      <div className={cardStyles.info.container}>
-        <div className={cardStyles.info.decorTop}></div>
-        <div className={cardStyles.info.decorBottom}></div>
+      <div className={cardStyles.success.container}>
+        <div className={cardStyles.success.decorTop}></div>
+        <div className={cardStyles.success.decorBottom}></div>
         
-        <div className="relative z-10">
-          <div className="flex items-center gap-4 mb-6">
-            <div className={cardStyles.info.icon}>
-              <svg className={`w-6 h-6 ${cardStyles.info.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <h3 className={cardStyles.info.title}>
-                  {dict.budgetCalculator?.results?.nextStep || "Next Step"}
-                </h3>
-                <span className={cardStyles.info.badge}>{nextRuleName}</span>
+        <div className="relative z-10 p-6">
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className={cardStyles.success.icon}>
+                <svg className={`w-6 h-6 ${cardStyles.success.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
               </div>
-              <p className={cardStyles.info.description}>
-                Your journey to better financial balance
+              <div>
+                <h3 className={`${cardStyles.success.title} flex items-center gap-2`}>
+                  🎉 {dict.budgetCalculator.results.recommendations.goldOptional}
+                </h3>
+                <span className={cardStyles.success.badge}>{dict.budgetCalculator.results.recommendations.savingsAchieved}</span>
+              </div>
+            </div>
+            <div>
+              <p className={cardStyles.success.description}>
+                {messageType === 'gold_optional_wants' 
+                  ? dict.budgetCalculator.results.recommendations.optionalWants
+                  : dict.budgetCalculator.results.recommendations.optionalNeeds}
               </p>
             </div>
           </div>
           
-          <div className={cardStyles.info.content}>
-            <p className={`${cardStyles.info.description} font-medium mb-2`}>
-              {`To achieve the ${nextRuleName} rule:`}
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            {recommendations.map((rec) => {
+              // Map recommendation label to category style
+              const style = rec.label === 'Needs' ? categoryStyles.needs 
+                          : rec.label === 'Wants' ? categoryStyles.wants 
+                          : categoryStyles.savings;
+              
+              const targetPercentage = nextRule![rec.label.toLowerCase() as 'needs' | 'wants' | 'savings'];
+              
+              return (
+                <div key={rec.label} className={cardStyles.success.content}>
+                  <div className={`${style.iconBg} mb-3 mx-auto`}>
+                    <div className={style.iconColor}>
+                      {rec.label === 'Needs' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                        </svg>
+                      )}
+                      {rec.label === 'Wants' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15m0-5a3 3 0 11-6 0 3 3 0 016 0zm6 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      )}
+                      {rec.label === 'Savings' && (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="text-center">
+                    <div className="mb-2">
+                      <div className={style.value}>
+                        {targetPercentage}%
+                      </div>
+                      <div className={style.label}>
+                        {dict.budgetCalculator.results.recommendations.targetLabel} {rec.label.toUpperCase()}
+                      </div>
+                    </div>
+                    
+                    <div className={`text-xs px-2 py-1 rounded-full inline-flex items-center gap-1 font-medium ${
+                      rec.isOnTarget ? badgeStyles.success : badgeStyles.info
+                    }`}>
+                      {rec.isOnTarget ? (
+                        <>
+                          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                          {dict.budgetCalculator.results.recommendations.great}
+                        </>
+                      ) : rec.categoryType === 'expense' ? (
+                        // For expenses: if changeNeeded is negative, we need to REDUCE (down arrow)
+                        rec.changeNeeded < 0 ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+                            </svg>
+                            {rec.changeNeeded}%
+                          </>
+                        ) : (
+                          // Below target for expenses - maintain (tick)
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            {dict.budgetCalculator.results.recommendations.belowTarget}
+                          </>
+                        )
+                      ) : (
+                        // For savings: if changeNeeded is positive, we need to INCREASE (up arrow)
+                        rec.changeNeeded > 0 ? (
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+                            </svg>
+                            +{rec.changeNeeded}%
+                          </>
+                        ) : (
+                          // Above target for savings - maintain (tick)
+                          <>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                            {dict.budgetCalculator.results.recommendations.aboveTarget}
+                          </>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          
+          <div className={cardStyles.success.content}>
+            <p className={`${cardStyles.success.description} font-medium mb-2`}>
+              💡 {dict.budgetCalculator.results.recommendations.optional} {nextRule!.name} {dict.budgetCalculator.results.recommendations.balance}
             </p>
-            <ul className={`text-sm ${cardStyles.info.description} space-y-1`}>
-              <li className="flex items-center gap-2">
-                <span className="w-1 h-1 bg-current rounded-full"></span>
-                Continue improving your budget allocation
-              </li>
+            <ul className={`text-sm ${cardStyles.success.description} space-y-1`}>
+              {messageType === 'gold_optional_wants' && (
+                <>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-current rounded-full"></span>
+                    {dict.budgetCalculator.results.recommendations.reduceSlightly}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-current rounded-full"></span>
+                    {dict.budgetCalculator.results.recommendations.savingsExcellent}
+                  </li>
+                </>
+              )}
+              {messageType === 'gold_optional_needs' && alternatives && (
+                <>
+                  {alternatives.includes('increase_income') && (
+                    <li className="flex items-center gap-2">
+                      <span className="w-1 h-1 bg-current rounded-full"></span>
+                      {dict.budgetCalculator.results.recommendations.considerIncome}
+                    </li>
+                  )}
+                  <li className="flex items-center gap-2">
+                    <span className="w-1 h-1 bg-current rounded-full"></span>
+                    {dict.budgetCalculator.results.recommendations.keepSavings}
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>
@@ -272,5 +581,182 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
     );
   }
 
+  // =================================================================
+  // SCENARIO 5 & 6: PROGRESS / START_SAVING - Building towards goals
+  // =================================================================
+//   if (messageType === 'progress' || messageType === 'start_saving') {
+//     // Get recommendations from budgetUtils for consistent logic
+//     const recommendations = generateCategoryRecommendations(
+//       nextRule,
+//       needsPercentage,
+//       wantsPercentage,
+//       savingsPercentage
+//     );
+
+//     return (
+//       <div className={cardStyles.info.container}>
+//         <div className={cardStyles.info.decorTop}></div>
+//         <div className={cardStyles.info.decorBottom}></div>
+        
+//         <div className="relative z-10 p-6">
+//           <div className="flex items-start justify-between mb-6">
+//             <div className="flex items-center gap-3">
+//               <div className={cardStyles.info.icon}>
+//                 <svg className={`w-6 h-6 ${cardStyles.info.iconColor}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+//                 </svg>
+//               </div>
+//               <div>
+//                 <h3 className={`${cardStyles.info.title} flex items-center gap-2`}>
+//                   {messageType === 'start_saving' ? '🚀 Start Building Your Savings!' : '📈 Great Progress! Keep Going!'}
+//                 </h3>
+//                 <span className={cardStyles.info.badge}>Next Target: {nextRule.name}</span>
+//               </div>
+//             </div>
+//             <div>
+//               <p className={cardStyles.info.description}>
+//                 {messageType === 'start_saving' 
+//                   ? 'Your next achievable financial milestone' 
+//                   : 'Building towards the gold standard'}
+//               </p>
+//             </div>
+//           </div>
+          
+//           <div className="grid grid-cols-3 gap-4 mb-4">
+//             {recommendations.map((rec) => {
+//               // Map recommendation label to category style
+//               const style = rec.label === 'Needs' ? categoryStyles.needs 
+//                           : rec.label === 'Wants' ? categoryStyles.wants 
+//                           : categoryStyles.savings;
+              
+//               const targetPercentage = nextRule[rec.label.toLowerCase() as 'needs' | 'wants' | 'savings'];
+              
+//               return (
+//                 <div key={rec.label} className={cardStyles.info.content}>
+//                   <div className={`${style.iconBg} mb-3 mx-auto`}>
+//                     <div className={style.iconColor}>
+//                       {rec.label === 'Needs' && (
+//                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+//                         </svg>
+//                       )}
+//                       {rec.label === 'Wants' && (
+//                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15m0-5a3 3 0 11-6 0 3 3 0 016 0zm6 3a9 9 0 11-18 0 9 9 0 0118 0z" />
+//                         </svg>
+//                       )}
+//                       {rec.label === 'Savings' && (
+//                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+//                         </svg>
+//                       )}
+//                     </div>
+//                   </div>
+                  
+//                   <div className="text-center">
+//                     <div className="mb-2">
+//                       <div className={style.value}>
+//                         {targetPercentage}%
+//                       </div>
+//                       <div className={style.label}>
+//                         TARGET {rec.label.toUpperCase()}
+//                       </div>
+//                     </div>
+                    
+//                     <div className={`text-xs px-2 py-1 rounded-full inline-flex items-center gap-1 font-medium ${
+//                       rec.isOnTarget ? badgeStyles.success : badgeStyles.info
+//                     }`}>
+//                       {rec.isOnTarget ? (
+//                         <>
+//                           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                           </svg>
+//                           Perfect!
+//                         </>
+//                       ) : rec.categoryType === 'expense' ? (
+//                         // For expenses: if changeNeeded is negative, we need to REDUCE (down arrow)
+//                         rec.changeNeeded < 0 ? (
+//                           <>
+//                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 13l-5 5m0 0l-5-5m5 5V6" />
+//                             </svg>
+//                             {rec.changeNeeded}%
+//                           </>
+//                         ) : (
+//                           // Below target for expenses - maintain (tick)
+//                           <>
+//                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                             </svg>
+//                             Good!
+//                           </>
+//                         )
+//                       ) : (
+//                         // For savings: if changeNeeded is positive, we need to INCREASE (up arrow)
+//                         rec.changeNeeded > 0 ? (
+//                           <>
+//                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 11l5-5m0 0l5 5m-5-5v12" />
+//                             </svg>
+//                             +{rec.changeNeeded}%
+//                           </>
+//                         ) : (
+//                           // Above target for savings - maintain (tick)
+//                           <>
+//                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+//                             </svg>
+//                             Good!
+//                           </>
+//                         )
+//                       )}
+//                     </div>
+//                   </div>
+//                 </div>
+//               );
+//             })}
+//           </div>
+          
+//           <div className={cardStyles.info.content}>
+//             <p className={`${cardStyles.info.description} font-medium mb-2`}>
+//               💡 To reach the {nextRule.name} target:
+//             </p>
+//             <ul className={`text-sm ${cardStyles.info.description} space-y-1`}>
+//               {recommendations.map((rec) => (
+//                 <li key={rec.label} className="flex items-center gap-2">
+//                   <span className="w-1 h-1 bg-current rounded-full"></span>
+//                   {rec.message}
+//                 </li>
+//               ))}
+//               {alternatives && alternatives.length > 0 && (
+//                 <>
+//                   {alternatives.includes('reduce_wants_more') && (
+//                     <li className="flex items-center gap-2">
+//                       <span className="w-1 h-1 bg-current rounded-full"></span>
+//                       Focus on reducing discretionary spending first
+//                     </li>
+//                   )}
+//                   {alternatives.includes('increase_income') && (
+//                     <li className="flex items-center gap-2">
+//                       <span className="w-1 h-1 bg-current rounded-full"></span>
+//                       Consider income increase through side work or advancement
+//                     </li>
+//                   )}
+//                   {alternatives.includes('gradual_approach') && (
+//                     <li className="flex items-center gap-2">
+//                       <span className="w-1 h-1 bg-current rounded-full"></span>
+//                       Take a gradual approach - small changes add up!
+//                     </li>
+//                   )}
+//                 </>
+//               )}
+//             </ul>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+
+  // Fallback - should never reach here
   return null;
 };

@@ -72,20 +72,20 @@ export const categoryStyles = {
   needs: {
     iconBg: "w-10 h-10 bg-red-100 dark:bg-red-900/30 rounded-lg flex items-center justify-center",
     iconColor: "text-red-600 dark:text-red-400",
-    value: "text-2xl font-bold text-red-600 dark:text-red-400",
-    label: "text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide",
+    value: "text-xl font-bold text-red-600 dark:text-red-400",
+    label: "text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide",
   },
   wants: {
     iconBg: "w-10 h-10 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center",
     iconColor: "text-blue-600 dark:text-blue-400",
-    value: "text-2xl font-bold text-blue-600 dark:text-blue-400",
-    label: "text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide",
+    value: "text-xl font-bold text-blue-600 dark:text-blue-400",
+    label: "text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide",
   },
   savings: {
     iconBg: "w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center",
     iconColor: "text-emerald-600 dark:text-emerald-400",
-    value: "text-2xl font-bold text-emerald-600 dark:text-emerald-400",
-    label: "text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide",
+    value: "text-xl font-bold text-emerald-600 dark:text-emerald-400",
+    label: "text-[10px] font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide",
   },
 };
 

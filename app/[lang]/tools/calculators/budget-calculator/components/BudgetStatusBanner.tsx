@@ -19,6 +19,7 @@ interface BudgetStatusBannerProps {
   totalSavings: number;
   isExpensesTooHigh: boolean;
   isExpensesSameOrExceedIncome: boolean;
+  dict: any;
 }
 
 export const BudgetStatusBanner: React.FC<BudgetStatusBannerProps> = ({
@@ -27,6 +28,7 @@ export const BudgetStatusBanner: React.FC<BudgetStatusBannerProps> = ({
   totalSavings,
   isExpensesTooHigh,
   isExpensesSameOrExceedIncome,
+  dict,
 }) => {
   const status = isExpensesTooHigh 
     ? statusStyles.overspending 
@@ -37,17 +39,17 @@ export const BudgetStatusBanner: React.FC<BudgetStatusBannerProps> = ({
   return (
     <div className={`p-3 rounded-lg ${status.container}`}>
       <div className="flex justify-between text-sm mb-2">
-        <span>Monthly Income:</span>
+        <span>{dict.budgetCalculator.status.monthlyIncome}</span>
         <span className="font-medium">{formatCurrency(income)}</span>
       </div>
       <div className="flex justify-between text-sm mb-2">
-        <span>Total Expenses:</span>
+        <span>{dict.budgetCalculator.status.totalExpenses}</span>
         <span className={status.value}>
           {formatCurrency(totalExpenses)}
         </span>
       </div>
       <div className="flex justify-between text-sm">
-        <span>Total Savings:</span>
+        <span>{dict.budgetCalculator.status.totalSavings}</span>
         <span className="font-medium">{formatCurrency(totalSavings)}</span>
       </div>
     </div>

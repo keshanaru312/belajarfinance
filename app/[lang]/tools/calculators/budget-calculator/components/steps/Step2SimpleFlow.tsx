@@ -61,6 +61,7 @@ export const Step2SimpleFlow: React.FC<Step2SimpleFlowProps> = ({
           totalSavings={simpleTotalSavings}
           isExpensesTooHigh={isExpensesTooHigh}
           isExpensesSameOrExceedIncome={isExpensesSameOrExceedIncome}
+          dict={dict}
         />
         
         {isExpensesTooHigh && (

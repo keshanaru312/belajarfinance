@@ -50,14 +50,14 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
       return null; // No breakdown for simple flow
     }
 
-    if (segmentName === 'Needs') {
+    if (segmentName === dict.budgetCalculator?.categories?.needsLabel) {
       return needsExpenses.filter(item => item.amount > 0);
-    } else if (segmentName === 'Wants') {
+    } else if (segmentName === dict.budgetCalculator?.categories?.wantsLabel) {
       return wantsExpenses.filter(item => item.amount > 0);
-    } else if (segmentName === 'Savings') {
+    } else if (segmentName === dict.budgetCalculator?.categories?.savingsLabel) {
       return [
-        { id: 'emergency', name: 'Emergency Fund', amount: emergencyFundAmount },
-        { id: 'other', name: 'Other Savings', amount: otherSavingsAmount }
+        { id: 'emergency', name: dict.budgetCalculator?.steps?.savings?.emergencyFundLabel || 'Emergency Fund', amount: emergencyFundAmount },
+        { id: 'other', name: dict.budgetCalculator?.steps?.savings?.otherSavingsLabel || 'Other Savings', amount: otherSavingsAmount }
       ].filter(item => item.amount > 0);
     }
     return [];
@@ -94,19 +94,19 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
   
   const data: PieChartData[] = drillDownData || [
     { 
-      name: 'Needs', 
+      name: dict.budgetCalculator.categories.needsLabel, 
       value: needsPercentage, 
       amount: totalNeeds,
       color: '#ef4444' // red-500
     },
     { 
-      name: 'Wants', 
+      name: dict.budgetCalculator.categories.wantsLabel, 
       value: wantsPercentage, 
       amount: totalWants,
       color: '#3b82f6' // blue-500
     },
     { 
-      name: 'Savings', 
+      name: dict.budgetCalculator.categories.savingsLabel, 
       value: savingsPercentage, 
       amount: totalSavings,
       color: '#10b981' // emerald-500
@@ -125,7 +125,7 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-semibold">
           {drillDownCategory 
-            ? `${drillDownCategory} Breakdown`
+            ? `${drillDownCategory} ${dict.budgetCalculator.results.breakdown}`
             : (dict.budgetCalculator?.results?.yourBudget || "Your Current Budget")
           }
         </h3>
@@ -134,7 +134,7 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
             onClick={() => setDrillDownCategory(null)}
             className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-200 flex items-center gap-1"
           >
-            ← Back to Overview
+            ← {dict.budgetCalculator.results.backToOverview}
           </button>
         )}
       </div>
@@ -147,8 +147,8 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             {flowType === 'detailed' 
-              ? 'Click any segment to see detailed information'
-              : 'Click any segment to explore what\'s possible with detailed tracking'
+              ? dict.budgetCalculator.results.clickToExplore
+              : dict.budgetCalculator.results.clickToExploreSimple
             }
           </p>
         </div>
@@ -337,7 +337,7 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                     </svg>
-                    View {selectedCategory} Breakdown Chart
+                    {dict.budgetCalculator?.results?.viewBreakdownChart?.replace('{category}', selectedCategory || '') || `View ${selectedCategory} Breakdown Chart`}
                   </button>
                 </div>
               )}
@@ -349,11 +349,10 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 <h5 className="font-medium text-gray-900 dark:text-gray-100 mb-2">
-                  Unlock Detailed {selectedCategory} Breakdown
+                  {dict.budgetCalculator?.results?.unlockDetailed?.replace('{category}', selectedCategory || '') || `Unlock Detailed ${selectedCategory} Breakdown`}
                 </h5>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                  See exactly where your {selectedCategory.toLowerCase()} money goes with interactive charts, 
-                  individual expense tracking, and detailed insights to optimize your spending.
+                  {dict.budgetCalculator?.results?.seeWhereMoneyGoes?.replace('{category}', selectedCategory?.toLowerCase() || '') || `See exactly where your ${selectedCategory?.toLowerCase()} money goes with interactive charts, individual expense tracking, and detailed insights to optimize your spending.`}
                 </p>
               </div>
               
@@ -368,11 +367,11 @@ export const InteractivePieChart: React.FC<InteractivePieChartProps> = ({
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
-                  Switch to Detailed Tracking
+                  {dict.budgetCalculator?.results?.switchToDetailed || "Switch to Detailed Tracking"}
                 </button>
                 
                 <p className="text-xs text-gray-500">
-                  Takes 2-3 minutes to set up • Get personalized recommendations
+                  {dict.budgetCalculator?.results?.setupTime || "Takes 2-3 minutes to set up • Get personalized recommendations"}
                 </p>
               </div>
             </div>
